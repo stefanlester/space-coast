@@ -1,0 +1,14 @@
+.bg-image {
+    background-image: url('picture2.png');
+    height: 800px;
+}
+
+.center {
+    padding-top: 1px;
+    left: 50%;
+
+}
+
+.navbar navbar-expand-lg navbar-light bg-light fixed-bottom {
+    height: 70px;
+} 
