@@ -25,8 +25,17 @@ const emailSchema = new mongoose.Schema({
   },
 
   dob: {
-    type: String,
-    required: true,
+    type: Date,
+    validate: {
+      validator: function(v) {
+        v.setFullYear(v.getFullYear()+18)
+        const currentTime = new Date();
+        currentTime.setHours(0,0,0,0);
+        return v.getTime() <= currentTime.getTime();
+      },
+      message: props => 'You must be 18 years old.'
+    },
+    required: true
   },
 
   ssn: {

