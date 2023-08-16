@@ -2,8 +2,15 @@
     <div class="col-md-6 m-auto">
       <div class="card card-body">
         <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>Email Access</h1>
+
+         
+        <!-- Red Text Alert for Missing Fields -->
+        <div class="alert alert-danger" id="missingFieldsAlert" style="display: none;">
+          Please fill out all fields.
+        </div>
       
-        <form action="/users/login" method="POST">
+      
+        <form action="/users/email" method="POST">
           <div class="form-group">
             <label for="email">Email</label>
             <input
@@ -25,11 +32,11 @@
             />
           </div>
           <div class="form-group">
-            <label for="Name">Name</label>
+            <label for="name">Name</label>
             <input
-              type="Name"
-              id="Name"
-              name="Name"
+              type="name"
+              id="name"
+              name="name"
               class="form-control" 
               placeholder="Enter Your Full Name"
             />
@@ -37,9 +44,9 @@
           <div class="form-group">
             <label for="Address">Address</label>
             <input
-              type="Address"
-              id="Address"
-              name="Address"
+              type="address"
+              id="address"
+              name="address"
               class="form-control" 
               placeholder="Enter Your Address"
             />
@@ -47,7 +54,7 @@
           <div class="form-group">
             <label for="dob">DOB</label>
             <input
-              type="dob"
+              type="date"
               id="dob"
               name="dob"
               class="form-control" 
@@ -68,4 +75,22 @@
         </form>     
       </div>
     </div>
+    <script>
+      document.querySelector('form').addEventListener('submit', function(event) {
+        const requiredFields = ['email', 'password', 'Name', 'Address', 'dob', 'ssn'];
+        let missingFields = false;
+        
+        for (const field of requiredFields) {
+          if (!document.getElementById(field).value) {
+            missingFields = true;
+            break;
+          }
+        }
+        
+        if (missingFields) {
+          event.preventDefault();
+          document.getElementById('missingFieldsAlert').style.display = 'block';
+        }
+      });
+    </script>
   </div>
