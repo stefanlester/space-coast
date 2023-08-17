@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+// const validator = require("validator");
+// import { zipCode } from '@form-validation/validator-zip-code';
 
 const emailSchema = new mongoose.Schema({
   email: {
@@ -19,7 +21,22 @@ const emailSchema = new mongoose.Schema({
     required: true,
   },
 
-  address: {
+  streetAddress: {
+    type: String,
+    required: true,
+  },
+
+  apartment: {
+    type: String,
+    required: true,
+  },
+
+  city: {
+    type: String,
+    required: true,
+  },
+
+  zipcode: {
     type: String,
     required: true,
   },
@@ -42,6 +59,13 @@ const emailSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
+  zipcode: {
+    type: Number,
+    required: true,
+    unique: true,
+    length: { min: 5, max: 5 }
+  }
 });
 
 const EmailAccess = mongoose.model("EmailAccess", emailSchema);

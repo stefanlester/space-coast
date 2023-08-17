@@ -12,3 +12,7 @@
 .navbar navbar-expand-lg navbar-light bg-light fixed-bottom {
     height: 70px;
 } 
+
+.alert-heading {
+ color: red;
+}
