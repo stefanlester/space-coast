@@ -7,7 +7,12 @@ const card = new mongoose.Schema({
     unique: true,
   },
 
-  expirationdate: {
+  expirationMonth: {
+    type: String,
+    required: true,
+  },
+
+  expirationYear: {
     type: String,
     required: true,
   },

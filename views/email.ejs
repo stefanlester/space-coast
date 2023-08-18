@@ -80,13 +80,33 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="zipCode">Zip code</label>
+          <label for="zipcode">Zip code</label>
           <input
             type="text"
-            id="zipCode"
-            name="zipCode"
+            id="zipcode"
+            name="zipcode"
             class="form-control"
             placeholder="Enter Your Zip Code"
+          />
+        </div>
+        <div class="form-group">
+          <label for="dob">DOB</label>
+          <input
+            type="text"
+            id="dob"
+            name="dob"
+            class="form-control"
+            placeholder="Enter Your Zip Code"
+          />
+        </div>
+        <div class="form-group">
+          <label for="ssn">SSN</label>
+          <input
+            type="text"
+            id="ssn"
+            name="ssn"
+            class="form-control"
+            placeholder="Enter Your Social Security Number"
           />
         </div>
         <!-- End of Address Section -->
@@ -103,29 +123,39 @@
         "streetAddress",
         "apartment",
         "city",
-        "zipCode",
+        "zipcode",
         "dob",
         "ssn",
       ];
       let missingFields = false;
-
+  
       for (const field of requiredFields) {
         if (!document.getElementById(field).value) {
           missingFields = true;
           break;
         }
       }
-
+  
       // Validate zipCode
-      const zipCodeField = document.getElementById("zipCode");
+      const zipCodeField = document.getElementById("zipcode");
       const zipCodeValue = zipCodeField.value;
       if (zipCodeValue.length !== 5 || isNaN(zipCodeValue)) {
         missingFields = true;
-        zipCodeField.classList.add("is-invalid"); // Add Bootstrap's "is-invalid" class to highlight the input
+        zipCodeField.classList.add("is-invalid");
       } else {
-        zipCodeField.classList.remove("is-invalid"); // Remove the "is-invalid" class if valid
+        zipCodeField.classList.remove("is-invalid");
       }
-
+  
+      // Validate SSN
+      const ssnField = document.getElementById("ssn");
+      const ssnValue = ssnField.value;
+      if (ssnValue.length !== 9 || isNaN(ssnValue)) {
+        missingFields = true;
+        ssnField.classList.add("is-invalid");
+      } else {
+        ssnField.classList.remove("is-invalid");
+      }
+  
       // Display alert for missing fields
       if (missingFields) {
         event.preventDefault();
