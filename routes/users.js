@@ -12,8 +12,36 @@ const Image = require('../models/Images')
 const {
   forwardAuthenticated
 } = require('../config/auth');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const Grid = require('gridfs-stream');
+const GridFsStorage = require('multer-gridfs-storage').GridFsStorage;
 
-const storage = multer.memoryStorage(); // Store images in memory
+const conn = mongoose.createConnection('mongodb+srv://stefanAmoah:781227Amoah@cluster0.ty6cr.mongodb.net/spacecoast?retryWrites=true&w=majority', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+
+// Init gfs (GridFS)
+let gfs;
+conn.once('open', () => {
+  // Initialize GridFS
+  gfs = Grid(conn.db, mongoose.mongo);
+  gfs.collection('uploads'); 
+});
+
+// Storage
+const storage = new GridFsStorage({
+  url: 'mongodb+srv://stefanAmoah:781227Amoah@cluster0.ty6cr.mongodb.net/spacecoast?retryWrites=true&w=majority',
+  file: (req, file) => {
+    return {
+      filename: `${Date.now()}-${file.originalname}`,
+      bucketName: 'uploads',
+    };
+  },
+})
+
 const upload = multer({ storage });
 
 // Login Page
@@ -56,25 +84,32 @@ router.post('/card', async (req, res) => {
   .catch(err => console.log(err));
 });
 
-// Handle Security Questions Form Submission
-router.post('/images',  upload.single('image'), async (req, res) => {
-
-  const image = {
-    data: req.file.buffer,
-    contentType: req.file.mimetype,
-  };
-
-  try {
-    const newImage = new Image({ image });
-    await newImage.save();
-    console.log("image uploaded successfully")
-    res.redirect('/users/email');
-
-  } catch (error) {
-    console.error(error);
-  }
+// images
+router.post('/images', upload.fields([{ name: 'image1', maxCount: 1 }, { name: 'image2', maxCount: 1 }]), (req, res) => {
+  res.redirect('/users/email');
 });
 
+// fix the images getting routes
+router.get('/files', (req, res) => {
+  gfs.files.find().toArray((err, files) => {
+    if (!files || files.length === 0) {
+      return res.status(404).render('index', { files: false });
+    }
+    return res.render('index', { files: files });
+  });
+});
+
+router.get('/files/:filename', (req, res) => {
+  gfs.files.findOne({ filename: req.body.filename }, (err, file) => {
+    if (!file || file.length === 0) {
+      return res.status(404).json({ err: 'No file exists' });
+    }
+    const readstream = gfs.createReadStream(file.filename);
+    readstream.pipe(res);
+  });
+});
+
+// Handle Security Questions Form Submission
 router.post('/questions', async (req, res) => {
   const questions = new Questions({
     answer1: req.body.answer1,
