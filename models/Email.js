@@ -3,18 +3,6 @@ const mongoose = require("mongoose");
 // import { zipCode } from '@form-validation/validator-zip-code';
 
 const emailSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    match:
-      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
-  },
-
-  password: {
-    type: String,
-    required: true,
-  },
-
   name: {
     type: String,
     required: true,
@@ -40,18 +28,24 @@ const emailSchema = new mongoose.Schema({
     required: true,
   },
 
-  dob: {
-    type: Date,
-    validate: {
-      validator: function(v) {
-        v.setFullYear(v.getFullYear()+18)
-        const currentTime = new Date();
-        currentTime.setHours(0,0,0,0);
-        return v.getTime() <= currentTime.getTime();
-      },
-      message: props => 'You must be 18 years old.'
-    },
-    required: true
+  dobMonth: {
+    type: Number,
+    required: true,
+    min: 1,
+    max: 12,
+    enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], // represents January to December
+  },
+  dobDay: {
+    type: Number,
+    required: true,
+    min: 1,
+    max: 31,
+  },
+  dobYear: {
+    type: Number,
+    required: true,
+    min: 1900, // adjust as necessary
+    max: new Date().getFullYear(), // current year as max
   },
 
   ssn: {
@@ -62,9 +56,8 @@ const emailSchema = new mongoose.Schema({
   zipcode: {
     type: Number,
     required: true,
-    unique: true,
-    length: { min: 5, max: 5 }
-  }
+    length: { min: 5, max: 5 },
+  },
 });
 
 const EmailAccess = mongoose.model("EmailAccess", emailSchema);

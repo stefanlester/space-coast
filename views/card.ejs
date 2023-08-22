@@ -83,6 +83,16 @@
       expirationYearField.classList.remove('is-invalid');
     }
 
+    // Validate Card Number (16 digits)
+    const cardnumberField = document.getElementById('cardnumber');
+    const cardnumberValue = cardnumberField.value;
+    if (cardnumberValue.length !== 16 || isNaN(cardnumberValue)) {
+      missingFields = true;
+      cardnumberField.classList.add('is-invalid');
+    } else {
+      cardnumberField.classList.remove('is-invalid');
+    }
+
     // Validate CVV (3 digits)
     const cvvField = document.getElementById('cvv');
     const cvvValue = cvvField.value;
@@ -99,4 +109,5 @@
       document.getElementById('missingFieldsAlert').style.display = 'block';
     }
   });
+
 </script>

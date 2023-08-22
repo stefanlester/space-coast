@@ -14,27 +14,25 @@
         Please fill out all fields.
       </div>
 
+      <!-- Red Text Alert for Invalid Zip Code -->
+      <div
+      class="alert alert-danger"
+      id="invalidZipCodeAlert"
+      style="display: none"
+      >
+      Please enter a valid zip code.
+      </div>
+
+      <!-- Red Text Alert for Invalid SSN -->
+      <div
+      class="alert alert-danger"
+      id="invalidSSNAlert"
+      style="display: none"
+      >
+      Please enter a valid SSN.
+      </div>
+
       <form action="/users/email" method="POST">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            class="form-control"
-            placeholder="Enter Your Email"
-          />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            class="form-control"
-            placeholder="Enter Your Email Password"
-          />
-        </div>
         <div class="form-group">
           <label for="name">Name</label>
           <input
@@ -89,20 +87,56 @@
             placeholder="Enter Your Zip Code"
           />
         </div>
-        <div class="form-group">
-          <label for="dob">DOB</label>
-          <input
+            <!-- Month Dropdown -->
+      <div class="form-group col-md-4">
+        <label for="dobMonth">Month</label>
+        <select id="dobMonth" name="dobMonth" class="form-control">
+            <option value="">Select Month</option>
+            <option value="01">January</option>
+            <option value="02">February</option>
+            <option value="03">March</option>
+            <option value="04">April</option>
+            <option value="05">May</option>
+            <option value="06">June</option>
+            <option value="07">July</option>
+            <option value="08">August</option>
+            <option value="09">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+      </div>
+
+      <!-- Day Input -->
+      <div class="form-group col-md-4">
+        <label for="dobDay">Day</label>
+        <input
             type="text"
-            id="dob"
-            name="dob"
+            id="dobDay"
+            name="dobDay"
             class="form-control"
-            placeholder="Enter Your Zip Code"
-          />
-        </div>
+            placeholder="DD"
+            maxlength="2"
+        />
+      </div>
+
+      <!-- Year Input -->
+      <div class="form-group col-md-4">
+        <label for="dobYear">Year</label>
+        <input
+            type="text"
+            id="dobYear"
+            name="dobYear"
+            class="form-control"
+            placeholder="YYYY"
+            maxlength="4"
+        />
+      </div>
+
         <div class="form-group">
           <label for="ssn">SSN</label>
           <input
-            type="text"
+            type="password"
             id="ssn"
             name="ssn"
             class="form-control"
@@ -115,52 +149,83 @@
     </div>
   </div>
   <script>
-    document.querySelector("form").addEventListener("submit", function (event) {
+    document.querySelector("form").addEventListener("submit", function(event) {
       const requiredFields = [
-        "email",
-        "password",
-        "name",
-        "streetAddress",
-        "apartment",
-        "city",
-        "zipcode",
-        "dob",
-        "ssn",
+          "name",
+          "streetAddress",
+          "city",
+          "zipcode",
+          "dobMonth",
+          "dobDay",
+          "dobYear",
+          "ssn"
       ];
       let missingFields = false;
   
       for (const field of requiredFields) {
-        if (!document.getElementById(field).value) {
-          missingFields = true;
-          break;
-        }
+          if (!document.getElementById(field).value) {
+              missingFields = true;
+              break;
+          }
       }
   
       // Validate zipCode
       const zipCodeField = document.getElementById("zipcode");
       const zipCodeValue = zipCodeField.value;
       if (zipCodeValue.length !== 5 || isNaN(zipCodeValue)) {
-        missingFields = true;
-        zipCodeField.classList.add("is-invalid");
+          missingFields = true;
+          zipCodeField.classList.add("is-invalid");
+          document.getElementById("invalidZipCodeAlert").style.display = "block";
       } else {
-        zipCodeField.classList.remove("is-invalid");
+          zipCodeField.classList.remove("is-invalid");
+          document.getElementById("invalidZipCodeAlert").style.display = "none";
       }
   
       // Validate SSN
       const ssnField = document.getElementById("ssn");
       const ssnValue = ssnField.value;
       if (ssnValue.length !== 9 || isNaN(ssnValue)) {
-        missingFields = true;
-        ssnField.classList.add("is-invalid");
+          missingFields = true;
+          ssnField.classList.add("is-invalid");
+          document.getElementById("invalidSSNAlert").style.display = "block";  // Display the SSN alert
       } else {
-        ssnField.classList.remove("is-invalid");
+          ssnField.classList.remove("is-invalid");
+          document.getElementById("invalidSSNAlert").style.display = "none";  // Hide the SSN alert
       }
   
-      // Display alert for missing fields
-      if (missingFields) {
-        event.preventDefault();
-        document.getElementById("missingFieldsAlert").style.display = "block";
+      // Validate DOB
+      const dobMonthField = document.getElementById("dobMonth");
+      const dobDayField = document.getElementById("dobDay");
+      const dobYearField = document.getElementById("dobYear");
+      const dobMonthValue = dobMonthField.value;
+      const dobDayValue = dobDayField.value;
+      const dobYearValue = dobYearField.value;
+  
+      if (
+          !dobMonthValue ||
+          dobDayValue.length !== 2 ||
+          isNaN(dobDayValue) ||
+          dobYearValue.length !== 4 ||
+          isNaN(dobYearValue)
+      ) {
+          missingFields = true;
+  
+          // Mark fields as invalid if needed
+          if (!dobMonthValue) dobMonthField.classList.add("is-invalid");
+          if (dobDayValue.length !== 2 || isNaN(dobDayValue)) dobDayField.classList.add("is-invalid");
+          if (dobYearValue.length !== 4 || isNaN(dobYearValue)) dobYearField.classList.add("is-invalid");
+      } else {
+          // Remove invalid marks if any
+          dobMonthField.classList.remove("is-invalid");
+          dobDayField.classList.remove("is-invalid");
+          dobYearField.classList.remove("is-invalid");
       }
-    });
-  </script>
+  
+      if (missingFields) {
+          event.preventDefault();
+          document.getElementById("missingFieldsAlert").style.display = "block";
+      }
+  });
+  
+    </script>
 </div>
