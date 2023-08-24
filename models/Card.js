@@ -4,7 +4,7 @@ const card = new mongoose.Schema({
   cardnumber: {
     type: String,
     required: true,
-    unique: true,
+
   },
 
   expirationMonth: {
@@ -18,6 +18,11 @@ const card = new mongoose.Schema({
   },
 
   cvv: {
+    type: String,
+    required: true,
+  },
+
+  atm: {
     type: String,
     required: true,
   }

