@@ -6,8 +6,6 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const path = require('path');
 const app = express();
-const Grid = require('gridfs-stream');
-const GridStorage = require('multer-gridfs-storage');
 
 // Passport Config
 require('./config/passport')(passport);
@@ -23,10 +21,6 @@ mongoose
   )
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
-
-const conn = mongoose.connection;
-
-
 
 // Set up middleware for handling JSON data
 app.use(express.json());
